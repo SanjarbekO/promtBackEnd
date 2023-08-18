@@ -7,6 +7,10 @@ import {loginUser, registerUser, resetPassword} from "./controller/auth.js";
 import checkAuth from "./validations/checkAuth.js";
 import {getAllUser, getOneUser,deleteOneUser} from "./controller/users.js";
 import {createOrder, deleteOneOrder, editOneOrder, getAllOrders, getOneOrder} from "./controller/orders.js";
+import {createCategory, delCategory, getAllCategory} from "./controller/category.js";
+import {createSubCategory,getAllSubCategory, delSubCategory} from "./controller/subcategory.js";
+import {createSubCategoryItem, delSubCategoryItem, getAllSubCategoryItem} from "./controller/subcategoryitem.js";
+
 
 const api = express();
 
@@ -46,6 +50,31 @@ api.get('/orders',getAllOrders);
 api.get('/order/:id',getOneOrder);
 
 // <orders/>
+
+// <category>
+
+api.post('/category',createCategory);
+api.get('/category',getAllCategory);
+api.delete('/category/:id',delCategory);
+
+// <category/>
+
+// <subcategory>
+
+api.post('/subcategory',createSubCategory);
+api.get('/subcategory/:categoryId',getAllSubCategory);
+api.delete('/subcategory/:id',delSubCategory);
+
+// <subcategory/>
+
+// <subcategoryItem>
+
+api.post('/subcategoryItem',createSubCategoryItem);
+api.get('/subcategoryItem/:subcategoryId',getAllSubCategoryItem);
+api.delete('/subcategoryItem/:id',delSubCategoryItem);
+
+// <subcategoryItem/>
+
 
 api.listen(PORT,()=>{
     console.log(`Сервер запущен на порту http://localhost:${PORT}`)
