@@ -52,31 +52,20 @@ export const getOneUser = async (req,res) => {
 //     }
 // };
 
-// export const deleteOneUser = async (req,res) => {
-//     try {
-//
-//         const user = await UsersModel.findOne({email: req.body.email});
-//
-//         const inValidPass = await bcrypt.compare(req.body.password, user._doc.passwordHash);
-//
-//
-//         if (!inValidPass) {
-//             return res.status(404).json({
-//                 message: 'Неверный пароль'
-//             })
-//         }
-//
-//         await UsersModel.deleteOne({email: req.body.email});
-//
-//         res.json({
-//             message: 'Юзер успешно удалён',
-//             status: 'success'
-//         })
-//
-//     } catch (err) {
-//         console.log(err);
-//         res.status(500).json({
-//             message: 'Не удалось удалить юзера'
-//         })
-//     }
-// };
+export const deleteOneUser = async (req,res) => {
+    try {
+
+        await UsersModel.deleteOne({_id: req.params.id});
+
+        res.json({
+            message: 'Юзер успешно удалён',
+            status: 'success'
+        })
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Не удалось удалить юзера'
+        })
+    }
+};

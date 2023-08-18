@@ -5,7 +5,7 @@ import {registerUserValidation,loginUserValidation,resetPasswordValidation} from
 import handleValidators from "./validations/validations.js"
 import {loginUser, registerUser, resetPassword} from "./controller/auth.js";
 import checkAuth from "./validations/checkAuth.js";
-import {getAllUser, getOneUser} from "./controller/users.js";
+import {getAllUser, getOneUser,deleteOneUser} from "./controller/users.js";
 
 const api = express();
 
@@ -27,7 +27,7 @@ const PORT = process.env.PORT || 4444;
 api.post('/register', registerUserValidation,handleValidators,registerUser);
 api.post('/login',loginUserValidation,handleValidators,loginUser);
 api.patch('/reset/password',resetPasswordValidation,handleValidators,checkAuth,resetPassword);
-// api.delete('/user',deleteUserValidation,handleValidators,checkAuth,deleteOneUser);
+api.delete('/user/:id',checkAuth,deleteOneUser);
 
 api.get('/users',getAllUser);
 api.get('/user/:id',getOneUser);

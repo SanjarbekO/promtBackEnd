@@ -26,11 +26,6 @@ export const resetPasswordValidation = [
     body('oldPassword', 'Пароль должен быть минимум 8 символов').isLength({min:8}),
     body('newPassword', 'Пароль должен быть минимум 8 символов').isLength({min:8})
 ];
-// export const deleteUserValidation = [
-//     body('email','Неверный формат почты').isEmail(),
-//     body('newPassword', 'Пароль должен быть минимум 8 символов').isLength({min:8})
-// ];
-
 
 export const addOrderValidation = [
     body('title', 'Заголовок объявления минимум 2 символа').isLength({min:2}),
