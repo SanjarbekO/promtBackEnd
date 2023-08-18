@@ -28,7 +28,8 @@ const ordersSchema = new mongoose.Schema({
     creatorId: {
         type: String,
         required: true
-    }
+    },
+    image: String
 }, {
     timestamps: true
 });
