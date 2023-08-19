@@ -1,6 +1,9 @@
 import express from "express"
 import mongoose from "mongoose";
 import cors from "cors"
+import cloudinary from "cloudinary";
+import multer from "multer"
+import fs from "node:fs";
 import {registerUserValidation,loginUserValidation,resetPasswordValidation,addOrderValidation} from "./validations/validations.js";
 import handleValidators from "./validations/validations.js"
 import {loginUser, registerUser, resetPassword} from "./controller/auth.js";
@@ -74,6 +77,51 @@ api.get('/subcategoryItem/:subcategoryId',getAllSubCategoryItem);
 api.delete('/subcategoryItem/:id',delSubCategoryItem);
 
 // <subcategoryItem/>
+
+// <cloudinary>
+
+const upload = multer({destination: 'uploads/'});
+
+cloudinary.config({
+    cloud_name: 'dvpyhgy2n',
+    api_key: '135558996454785',
+    api_secret: '***************************'
+});
+
+api.post('/upload', upload.single('file'),(req,res) => {
+
+    const file = req.file;
+
+    if(!file){
+        return res.status(400).send('Файл не найден');
+    }
+
+    const filename = `${Date.now()}_${file.originalname}`;
+    const tempFilePath = `uploads/${filename}`;
+    fs.writeFileSync(tempFilePath, file.buffer);
+
+
+    cloudinary.v2.uploader.upload(tempFilePath, (err,result) => {
+        if (err){
+            console.log('Ошибка загрузики файла', err);
+            return res.status(500).send('Ошибка загрузки файла')
+        }
+        fs.unlinkSync(tempFilePath);
+
+        const publicUrl = result.secure_url;
+        res.status(200).send(`Файл успешно загружен. Публичная ссылка: ${publicUrl}`);
+
+        res.json({
+            url:publicUrl
+        })
+    })
+
+});
+
+api.use('/uploads', express.static('uploads'));
+
+
+// <cloudinary/>
 
 
 api.listen(PORT,()=>{
