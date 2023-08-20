@@ -85,7 +85,7 @@ const upload = multer({destination: 'uploads/'});
 cloudinary.config({
     cloud_name: 'dvpyhgy2n',
     api_key: '135558996454785',
-    api_secret: '***************************'
+    api_secret: 'Y2SU-5oikevnMOF3Z5vnCHoa9s0'
 });
 
 api.post('/upload', upload.single('file'),(req,res) => {
