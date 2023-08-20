@@ -111,9 +111,9 @@ api.post('/upload', upload.single('file'),(req,res) => {
         const publicUrl = result.secure_url;
         res.status(200).send(`Файл успешно загружен. Публичная ссылка: ${publicUrl}`);
 
-        res.json({
-            url:publicUrl
-        })
+        // res.json({
+        //     url:publicUrl
+        // })
     })
 
 });
