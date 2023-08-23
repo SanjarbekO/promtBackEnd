@@ -20,7 +20,7 @@ const usersSchema = new mongoose.Schema({
         required: true
     },
     number: {
-        type: Number,
+        type: String,
         required: true
     },
     image: String,

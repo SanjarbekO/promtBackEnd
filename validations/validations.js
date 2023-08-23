@@ -14,7 +14,7 @@ export const registerUserValidation = [
     body('password', 'Пароль должен быть минимум 8 символов').isLength({min:8}),
     body('login', 'Укажите ваш логин').isString(),
     body('name', 'Укажите ваше имя').isString(),
-    body('number', 'Укажите ваш номер').isNumeric(),
+    body('number', 'Укажите ваш номер').isString(),
     body('image', 'Неверный путь').optional().isString()
 ];
 export const loginUserValidation = [
