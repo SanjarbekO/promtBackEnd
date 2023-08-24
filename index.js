@@ -102,20 +102,17 @@ api.post('/upload', upload.single('file'),(req,res) => {
 
 
     cloudinary.v2.uploader.upload(tempFilePath, (err,result) => {
-        if (err){
+        if (err) {
             console.log('Ошибка загрузики файла', err);
             return res.status(500).send('Ошибка загрузки файла')
         }
         fs.unlinkSync(tempFilePath);
 
         const publicUrl = result.secure_url;
-        res.status(200).send(`Файл успешно загружен. Публичная ссылка: ${publicUrl}`);
-
         res.json({
-            url:publicUrl
-        })
+            url: publicUrl
+        });
     })
-
 });
 
 api.use('/uploads', express.static('uploads'));
