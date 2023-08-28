@@ -1,10 +1,30 @@
 import OrdersModel from '../models/orders.js'
+import UsersModel from "../models/users.js";
 
 
 
 export const createOrder = async (req, res) => {
     try {
-        const doc = new OrdersModel(req.body);
+        const user = await UsersModel.findOne({_id: req.body.creatorId})
+
+        if(!user){
+            res.status({
+                message: "Пользователь не найден (creatorId)",
+                status: 403
+            })
+        }
+
+        const request = req.body;
+        const {creatorId, ...reqBody}= request;
+
+        const resData = {
+            ...reqBody, creatorData: {
+                id: user._id,
+                name: user.name
+            }
+        };
+
+        const doc = new OrdersModel(resData);
 
         await doc.save();
 

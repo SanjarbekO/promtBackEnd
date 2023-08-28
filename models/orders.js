@@ -1,5 +1,17 @@
 import mongoose from "mongoose";
 
+const creatorDataSchema = new mongoose.Schema({
+    _id: false,
+    id: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
+    }
+})
+
 const ordersSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -25,8 +37,8 @@ const ordersSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    creatorId: {
-        type: String,
+    creatorData: {
+        type: creatorDataSchema,
         required: true
     },
     image: String
