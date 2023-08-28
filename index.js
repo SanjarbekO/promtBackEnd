@@ -34,7 +34,7 @@ const PORT = process.env.PORT || 4444;
 
 api.post('/register', registerUserValidation,handleValidators,registerUser);
 api.post('/login',loginUserValidation,handleValidators,loginUser);
-api.patch('/reset/password',resetPasswordValidation,handleValidators,checkAuth,resetPassword);
+api.post('/reset/password',resetPasswordValidation,handleValidators,checkAuth,resetPassword);
 api.delete('/user/:id',checkAuth,deleteOneUser);
 
 api.get('/users',getAllUser);
