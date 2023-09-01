@@ -121,29 +121,45 @@ api.post('/upload', upload.single('file'),(req,res) => {
 
 api.use('/uploads', express.static('uploads'));
 
-api.patch('/reset/upload/:id', upload.single('file'), async (req, res) => {
+api.post('/reset/upload/:id', upload.single('file'), async (req, res) => {
     try {
-        const userId = req.params.id;
-        const newImagePath = req.file.path; // Path to the uploaded image on the server
-        const newImageUrl = cloudinary.v2.uploader.upload(newImagePath).secure_url; // Upload the new image to Cloudinary and get the new URL
-        console.log(newImageUrl);
-        console.log(newImagePath);
+        const file = req.file;
 
-        // Update the user record in the database with the new image URL
-        const updatedUser = await UsersModel.findByIdAndUpdate(
-            userId,
-            { $set: { image: newImageUrl } },
-            { new: true }
-        );
-
-        if (!updatedUser) {
-            return res.status(404).json({ message: 'User not found' });
+        if(!file){
+            return res.status(400).send('Файл не найден');
         }
 
-        res.status(200).json({
-            message: 'Image successfully changed',
-            user: updatedUser,
-        });
+        const filename = `${Date.now()}_${file.originalname}`;
+        const tempFilePath = `uploads/${filename}`;
+        fs.writeFileSync(tempFilePath, file.buffer);
+
+        cloudinary.v2.uploader.upload(tempFilePath, async (err,result) => {
+            if (err) {
+                console.log('Ошибка загрузики файла', err);
+                return res.status(500).send('Ошибка загрузки файла')
+            }
+            fs.unlinkSync(tempFilePath);
+
+            const publicUrl = result.secure_url;
+            const userId = req.params.id;
+            const updatedUser = await UsersModel.findByIdAndUpdate(
+                userId,
+                { image: publicUrl } ,
+                { new: true }
+            );
+
+            if (!updatedUser) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            res.status(200).json({
+                message: 'Image successfully changed',
+                user: updatedUser,
+            });
+        })
+
+
+
     } catch (error) {
         console.error(error);
         res.status(500).json({
