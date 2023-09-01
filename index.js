@@ -126,8 +126,8 @@ api.patch('/reset/upload/:id', upload.single('file'), async (req, res) => {
         const userId = req.params.id;
         const newImagePath = req.file.path; // Path to the uploaded image on the server
         const newImageUrl = cloudinary.v2.uploader.upload(newImagePath).secure_url; // Upload the new image to Cloudinary and get the new URL
-        console.log(newImageUrl)
-        console.log(newImagePath)
+        console.log(newImageUrl);
+        console.log(newImagePath);
 
         // Update the user record in the database with the new image URL
         const updatedUser = await UsersModel.findByIdAndUpdate(
