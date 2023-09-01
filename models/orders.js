@@ -9,8 +9,9 @@ const creatorDataSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
-    }
-})
+    },
+    image: String
+});
 
 const ordersSchema = new mongoose.Schema({
     title: {

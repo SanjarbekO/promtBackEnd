@@ -20,7 +20,8 @@ export const createOrder = async (req, res) => {
         const resData = {
             ...reqBody, creatorData: {
                 id: user._id,
-                name: user.name
+                name: user.name,
+                image: user.image
             }
         };
 

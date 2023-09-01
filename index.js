@@ -13,6 +13,7 @@ import {createOrder, deleteOneOrder, editOneOrder, getAllOrders, getOneOrder} fr
 import {createCategory, delCategory, getAllCategory} from "./controller/category.js";
 import {createSubCategory,getAllSubCategory, delSubCategory} from "./controller/subcategory.js";
 import {createSubCategoryItem, delSubCategoryItem, getAllSubCategoryItem} from "./controller/subcategoryitem.js";
+import UsersModel from './models/users.js'
 
 
 const api = express();
@@ -24,7 +25,10 @@ api.use(cors());
 
 const mongoDbPassword= '123cdexswzaq123';
 
-mongoose.connect(`mongodb+srv://sanjar:${mongoDbPassword}@sanbay.m21vgpa.mongodb.net/?retryWrites=true&w=majority`)
+mongoose.connect(`mongodb+srv://sanjar:${mongoDbPassword}@sanbay.m21vgpa.mongodb.net/?retryWrites=true&w=majority`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
     .then(() => console.log('Mongo DB успешно запущен'))
     .catch((err) => console.log('Ошибка при запуске Mongo DB', err));
 
@@ -117,6 +121,37 @@ api.post('/upload', upload.single('file'),(req,res) => {
 
 api.use('/uploads', express.static('uploads'));
 
+api.patch('/reset/upload/:id', upload.single('file'), async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const newImagePath = req.file.path; // Path to the uploaded image on the server
+        const newImageUrl = cloudinary.v2.uploader.upload(newImagePath).secure_url; // Upload the new image to Cloudinary and get the new URL
+        console.log(newImageUrl)
+        console.log(newImagePath)
+
+        // Update the user record in the database with the new image URL
+        const updatedUser = await UsersModel.findByIdAndUpdate(
+            userId,
+            { $set: { image: newImageUrl } },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({
+            message: 'Image successfully changed',
+            user: updatedUser,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: 'Failed to update image',
+        });
+    }
+});
+
 
 // <cloudinary/>
 
@@ -124,3 +159,4 @@ api.use('/uploads', express.static('uploads'));
 api.listen(PORT,()=>{
     console.log(`Сервер запущен на порту http://localhost:${PORT}`)
 });
+
