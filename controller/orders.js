@@ -61,8 +61,8 @@ export const getAllOrders = async (req,res) => {
             orders = orders.filter(item => item.status === req.query.status)
         }
 
-        if (req.query.creatorId) {
-            orders = orders.filter(item => item.creatorId === req.query.creatorId)
+        if (req.query.id) {
+            orders = orders.filter(item => item.creatorData.id === req.query.id)
         }
 
         if(req.query.category){
