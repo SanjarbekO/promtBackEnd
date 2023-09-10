@@ -23,8 +23,12 @@ const ordersSchema = new mongoose.Schema({
         required: true
     },
     category: {
-      type: String,
-      required: true
+        type: String,
+        required: true
+    },
+    subcategory: {
+        type: String,
+        required: true
     },
     price: {
         type: Number,
@@ -35,6 +39,10 @@ const ordersSchema = new mongoose.Schema({
         required:true
     },
     status: {
+        type: String,
+        required: true
+    },
+    phone: {
         type: String,
         required: true
     },

@@ -18,7 +18,7 @@ export const registerUserValidation = [
     body('image', 'Неверный путь').optional().isString()
 ];
 export const loginUserValidation = [
-    body('email','Неверный формат почты').isEmail(),
+    body('email','Неверный формат электронной почты').isEmail(),
     body('password', 'Пароль должен быть минимум 8 символов').isLength({min:8})
 ];
 export const resetPasswordValidation = [
@@ -34,5 +34,6 @@ export const addOrderValidation = [
     body('price', 'Неверный формат цены').isNumeric(),
     body('views', 'Неверный формат просмотров').isNumeric(),
     body('status', 'Неверный формат статуса').isString(),
+    body('phone', 'Неверный формат номера').isString(),
     body('creatorId','Неверный формат id создателя').isMongoId()
 ];

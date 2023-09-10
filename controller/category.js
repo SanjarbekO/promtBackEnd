@@ -32,6 +32,20 @@ export const getAllCategory = async (req,res) => {
         })
     }
 };
+export const getOneCategory = async (req,res) => {
+    try {
+
+        const categories = await  CategoryModel.findById(req.params.id);
+
+        res.json(categories)
+
+    }catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Не удалось получить категории'
+        })
+    }
+};
 
 export const delCategory = async (req,res) => {
     try {

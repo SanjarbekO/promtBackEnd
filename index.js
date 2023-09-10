@@ -9,11 +9,12 @@ import handleValidators from "./validations/validations.js"
 import {loginUser, registerUser, resetPassword} from "./controller/auth.js";
 import checkAuth from "./validations/checkAuth.js";
 import {getAllUser, getOneUser,deleteOneUser} from "./controller/users.js";
-import {createOrder, deleteOneOrder, editOneOrder, getAllOrders, getOneOrder} from "./controller/orders.js";
-import {createCategory, delCategory, getAllCategory} from "./controller/category.js";
+import {createOrder, deleteOneOrder, editOneOrder, getAllOrders, getOneOrder, increaseViews} from "./controller/orders.js";
+import {createCategory, delCategory, getAllCategory, getOneCategory} from "./controller/category.js";
 import {createSubCategory,getAllSubCategory, delSubCategory} from "./controller/subcategory.js";
 import {createSubCategoryItem, delSubCategoryItem, getAllSubCategoryItem} from "./controller/subcategoryitem.js";
 import UsersModel from './models/users.js'
+import OrdersModel from './models/orders.js'
 
 
 const api = express();
@@ -55,6 +56,19 @@ api.delete('/order/:id',checkAuth,deleteOneOrder);
 
 api.get('/orders',getAllOrders);
 api.get('/order/:id',getOneOrder);
+// api.get('/order/:id/views', async (req, res) => {
+//     try {
+//         const {id} = req.params;
+//         const order = await OrdersModel.findById(id);
+//         res.json({viewCount: order.views});
+//     } catch (error) {
+//         console.error('Error fetching view count:', error);
+//         res.status(500).json({error: 'Failed to fetch view count'});
+//     }
+// });
+
+
+api.post('/increase-views/:id', increaseViews)
 
 // <orders/>
 
@@ -62,6 +76,7 @@ api.get('/order/:id',getOneOrder);
 
 api.post('/category',createCategory);
 api.get('/category',getAllCategory);
+api.get('/category/:id',getOneCategory);
 api.delete('/category/:id',delCategory);
 
 // <category/>
@@ -175,4 +190,3 @@ api.post('/reset/upload/:id', upload.single('file'), async (req, res) => {
 api.listen(PORT,()=>{
     console.log(`Сервер запущен на порту http://localhost:${PORT}`)
 });
-
