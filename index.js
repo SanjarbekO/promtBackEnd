@@ -14,7 +14,6 @@ import {createCategory, delCategory, getAllCategory, getOneCategory} from "./con
 import {createSubCategory,getAllSubCategory, delSubCategory} from "./controller/subcategory.js";
 import {createSubCategoryItem, delSubCategoryItem, getAllSubCategoryItem} from "./controller/subcategoryitem.js";
 import UsersModel from './models/users.js'
-import OrdersModel from './models/orders.js'
 
 
 const api = express();
@@ -55,6 +54,7 @@ api.delete('/order/:id',checkAuth,deleteOneOrder);
 
 
 api.get('/orders',getAllOrders);
+
 api.get('/order/:id',getOneOrder);
 // api.get('/order/:id/views', async (req, res) => {
 //     try {

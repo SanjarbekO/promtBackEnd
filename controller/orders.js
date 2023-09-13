@@ -60,15 +60,19 @@ export const getAllOrders = async (req,res) => {
             orders = orders.filter(item => item.status === req.query.status)
         }
 
-        if (req.query.creatorData) {
+        if (req.query.title) {
+            orders = orders.filter(item => item.title.toLowerCase().startsWith(req.query.title.toLowerCase()))
+        }
+
+        if (req.query.id) {
             orders = orders.filter(item => item.creatorData.id === req.query.id)
         }
 
         if(req.query.category){
             orders = orders.filter(item => req.query.category.includes(item.category))
         }
+
         if (req.query.createdAt) {
-            // Предположим, что req.query.createdAt содержит дату в формате строки (например, '2023-09-10')
             const filterDate = new Date(req.query.createdAt);
 
             orders = orders.filter((item) => {
@@ -241,3 +245,21 @@ export const increaseViews = async (req, res) => {
         });
     }
 };
+
+// export const searchTitle = async (req,res) => {
+//     try {
+//         const title = req.query.title;
+//
+//         const regex = new RegExp(title, 'i');
+//
+//         const orders = await OrdersModel.find({ title: {$regex: regex}});
+//
+//         if (orders.length === 0) {
+//             return res.status(404).json({ message: 'Заказы не найдены' });
+//         }
+//
+//     } catch (error) {
+//         console.error('Ошибка при поиске заказов:', error);
+//         res.status(500).json({ message: 'Произошла ошибка при поиске заказов' });
+//     }
+// }
