@@ -8,7 +8,7 @@ import {registerUserValidation,loginUserValidation,resetPasswordValidation,addOr
 import handleValidators from "./validations/validations.js"
 import {loginUser, registerUser, resetPassword} from "./controller/auth.js";
 import checkAuth from "./validations/checkAuth.js";
-import {getAllUser, getOneUser,deleteOneUser} from "./controller/users.js";
+import {getAllUser, getOneUser,deleteOneUser,editOneUser} from "./controller/users.js";
 import {createOrder, deleteOneOrder, editOneOrder, getAllOrders, getOneOrder, increaseViews} from "./controller/orders.js";
 import {createCategory, delCategory, getAllCategory, getOneCategory} from "./controller/category.js";
 import {createSubCategory,getAllSubCategory, delSubCategory} from "./controller/subcategory.js";
@@ -40,6 +40,7 @@ api.post('/register', registerUserValidation,handleValidators,registerUser);
 api.post('/login',loginUserValidation,handleValidators,loginUser);
 api.post('/reset/password',resetPasswordValidation,handleValidators,checkAuth,resetPassword);
 api.delete('/user/:id',checkAuth,deleteOneUser);
+api.patch('/user/:id',checkAuth,editOneUser);
 
 api.get('/users',getAllUser);
 api.get('/user/:id',getOneUser);
@@ -54,19 +55,7 @@ api.delete('/order/:id',checkAuth,deleteOneOrder);
 
 
 api.get('/orders',getAllOrders);
-
 api.get('/order/:id',getOneOrder);
-// api.get('/order/:id/views', async (req, res) => {
-//     try {
-//         const {id} = req.params;
-//         const order = await OrdersModel.findById(id);
-//         res.json({viewCount: order.views});
-//     } catch (error) {
-//         console.error('Error fetching view count:', error);
-//         res.status(500).json({error: 'Failed to fetch view count'});
-//     }
-// });
-
 
 api.post('/increase-views/:id', increaseViews)
 

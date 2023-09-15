@@ -81,6 +81,13 @@ export const getAllOrders = async (req,res) => {
             });
         }
 
+        if (req.query.views === 'asc'){
+            orders = orders.sort((a,b) => a.views - b.views)
+        }else if(req.query.views === 'desc'){
+            orders = orders.sort((a,b) => b.views - a.views)
+        }
+
+
         res.json(orders)
 
     } catch (err) {
@@ -101,20 +108,10 @@ export const getOneOrder = async (req, res) => {
             });
         }
 
-        // if (req.query.views) {
-        //     // Increment the view count if requested
-        //     await OrdersModel.updateOne(
-        //         { _id: req.params.id },
-        //         { $inc: { views: 1 } }
-        //     );
-        // }
-
-        // Find the user data based on the creatorId in the order
         const user = await UsersModel.findById(order.creatorData.id);
 
-        // Combine the order and user data to include creatorData
         const orderWithCreatorData = {
-            ...order.toObject(), // Convert Mongoose document to plain object
+            ...order.toObject(),
             creatorData: {
                 id: user._id,
                 name: user.name,
@@ -130,7 +127,6 @@ export const getOneOrder = async (req, res) => {
         });
     }
 };
-
 
 export const editOneOrder = async (req, res) => {
     try {
@@ -170,35 +166,6 @@ export const deleteOneOrder = async (req, res) => {
     }
 };
 
-
-
-// const trackDeclarationView = async (req, res, next) => {
-//     try {
-//         const { id } = req.params;
-//         const userIP = req.ip; // You can use user's IP for simplicity
-//
-//         // Check if the user has already viewed this declaration (you might want to add more robust user tracking)
-//         const hasUserViewed = await ViewLogModel.exists({ declarationId: id, userIP });
-//
-//         if (!hasUserViewed) {
-//             // Increment the view count in the declaration document
-//             await OrdersModel.updateOne({ _id: id }, { $inc: { views: 1 } });
-//
-//             // Record the user's view
-//             await ViewLogModel.create({ declarationId: id, userIP });
-//
-//             // Continue processing the request
-//             next();
-//         } else {
-//             // User has already viewed, proceed without incrementing view count
-//             next();
-//         }
-//     } catch (error) {
-//         console.error('Error tracking view:', error);
-//         next();
-//     }
-// };
-
 export const increaseViews = async (req, res) => {
     try {
         const orderId = req.params.id; // Получаем id заказа из параметра запроса
@@ -211,14 +178,9 @@ export const increaseViews = async (req, res) => {
             });
         }
 
-        const userId = req.body.userId; // Получаем id пользователя из тела запроса
+        const userId = req.body.userId;
 
-        console.log('userId:', userId);
-        console.log('order.creatorData.id:', order.creatorData.id);
-
-        // Проверяем, что userId не равен id создателя заказа
         if (userId !== order.creatorData.id) {
-            // Увеличиваем views на 1
             const updatedOrder = await OrdersModel.findByIdAndUpdate(
                 orderId,
                 { $inc: { views: 1 } },
@@ -245,21 +207,3 @@ export const increaseViews = async (req, res) => {
         });
     }
 };
-
-// export const searchTitle = async (req,res) => {
-//     try {
-//         const title = req.query.title;
-//
-//         const regex = new RegExp(title, 'i');
-//
-//         const orders = await OrdersModel.find({ title: {$regex: regex}});
-//
-//         if (orders.length === 0) {
-//             return res.status(404).json({ message: 'Заказы не найдены' });
-//         }
-//
-//     } catch (error) {
-//         console.error('Ошибка при поиске заказов:', error);
-//         res.status(500).json({ message: 'Произошла ошибка при поиске заказов' });
-//     }
-// }

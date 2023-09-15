@@ -34,25 +34,25 @@ export const getOneUser = async (req,res) => {
     }
 };
 
-// export const editOneUser = async (req,res) => {
-//     try {
-//
-//         await UsersModel.updateOne({_id: req.params.id},
-//             req.body,
-//             {returnDocument: 'after'});
-//
-//         res.json({
-//             message: 'Заказ успешно изменен',
-//             status: 'success'
-//         })
-//
-//     } catch (err) {
-//         console.log(err);
-//         res.status(500).json({
-//             message: 'Не удалось изменить юзера'
-//         })
-//     }
-// };
+export const editOneUser = async (req,res) => {
+    try {
+
+        await UsersModel.updateOne({_id: req.params.id},
+            req.body,
+            {returnDocument: 'after'});
+
+        res.json({
+            message: 'Заказ успешно изменен',
+            status: 'success'
+        })
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Не удалось изменить юзера'
+        })
+    }
+};
 
 export const deleteOneUser = async (req,res) => {
     try {
