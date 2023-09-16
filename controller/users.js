@@ -37,7 +37,9 @@ export const getOneUser = async (req,res) => {
 export const editOneUser = async (req,res) => {
     try {
 
-        await UsersModel.updateOne({_id: req.params.id},
+
+        await UsersModel.findByIdAndUpdate({_id: req.params.id},
+
             req.body,
             {returnDocument: 'after'});
 
@@ -45,6 +47,7 @@ export const editOneUser = async (req,res) => {
             message: 'Заказ успешно изменен',
             status: 'success'
         })
+        console.log(req.body)
 
     } catch (err) {
         console.log(err);
