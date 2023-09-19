@@ -180,7 +180,7 @@ export const increaseViews = async (req, res) => {
 
         const userId = req.body.userId;
 
-        if (userId !== order.creatorData.id) {
+        if (userId !== order.creatorData.id && userId !== undefined) {
             const updatedOrder = await OrdersModel.findByIdAndUpdate(
                 orderId,
                 { $inc: { views: 1 } },

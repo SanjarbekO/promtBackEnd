@@ -40,7 +40,7 @@ api.post('/register', registerUserValidation,handleValidators,registerUser);
 api.post('/login',loginUserValidation,handleValidators,loginUser);
 api.post('/reset/password',resetPasswordValidation,handleValidators,checkAuth,resetPassword);
 api.delete('/user/:id',checkAuth,deleteOneUser);
-api.post('/user/:id',checkAuth,editOneUser);
+api.post('/user/:id',editOneUser);
 
 api.get('/users',getAllUser);
 api.get('/user/:id',getOneUser);

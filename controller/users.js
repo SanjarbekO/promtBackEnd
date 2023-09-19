@@ -36,18 +36,15 @@ export const getOneUser = async (req,res) => {
 
 export const editOneUser = async (req,res) => {
     try {
-
-
-        await UsersModel.findByIdAndUpdate({_id: req.params.id},
-
+        const updateUser =await UsersModel.findByIdAndUpdate( req.params.id,
             req.body,
             {returnDocument: 'after'});
 
-        res.json({
-            message: 'Заказ успешно изменен',
-            status: 'success'
+        res.status(200).json({
+            message: 'Юзер успешно изменен',
+            status: 'success',
+            user: updateUser
         })
-        console.log(req.body)
 
     } catch (err) {
         console.log(err);
